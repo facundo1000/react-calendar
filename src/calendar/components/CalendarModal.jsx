@@ -30,7 +30,7 @@ export const CalendarModal = () => {
 
     const [formSubmitted, setFormSubmitted] = useState(false);
 
-    const { setActiveEvent, startSavingEvent, activeEvent } = useCalendarStore();
+    const { startSavingEvent, activeEvent } = useCalendarStore();
 
     const [formValues, setFormValues] = useState({
         title: '',
