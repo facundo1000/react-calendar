@@ -18,7 +18,7 @@ export const calendarSlice = createSlice({
         },
         onUpdateEvent: (state, { payload }) => {
             state.events = state.events.map(
-                e => (e._id === payload._id) ? payload : e
+                e => (e.id === payload.id) ? payload : e
             );
         },
         onDeleteEvent: (state) => {

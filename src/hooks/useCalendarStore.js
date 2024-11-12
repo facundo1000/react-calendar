@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onAddNewEvent, onDeleteEvent, onLoadEvents, onSetActiveEvent, onUpdateEvent } from '../store/calendar/calendarSlice';
 import { calendarApi } from '../api';
 import { convertEventsToDateEvents } from '../helpers';
+import Swal from 'sweetalert2';
 
 export const useCalendarStore = () => {
 
@@ -17,13 +18,20 @@ export const useCalendarStore = () => {
 
   const startSavingEvent = async (calendarEvent) => {
 
-    if (calendarEvent._id) {
-      //Actualizar
-      dispatch(onUpdateEvent({ ...calendarEvent }));
-    } else {
+    try {
+      if (calendarEvent.id) {
+        //Actualizar
+        await calendarApi.put(`/events/${calendarEvent.id}`, calendarEvent);
+        dispatch(onUpdateEvent({ ...calendarEvent, user }));
+        return;
+      }
       //Agregar
       const { data } = await calendarApi.post('/events', calendarEvent);
       dispatch(onAddNewEvent({ ...calendarEvent, id: data.evento.id, user }));
+
+    } catch (error) {
+      console.log(error);
+      Swal.fire('Error', error.response.data?.msg, 'error');
     }
   };
 

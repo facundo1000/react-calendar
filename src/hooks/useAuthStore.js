@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { calendarApi } from "../api";
 import { clearErrorMessage, onChecking, onLogin, onLogOut } from "../store/auth/authSlice";
 
