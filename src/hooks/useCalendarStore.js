@@ -30,13 +30,29 @@ export const useCalendarStore = () => {
       dispatch(onAddNewEvent({ ...calendarEvent, id: data.evento.id, user }));
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       Swal.fire('Error', error.response.data?.msg, 'error');
     }
   };
 
-  const startDeleteEvent = () => {
-    dispatch(onDeleteEvent());
+  const startDeleteEvent = async () => {
+
+    try {
+      if (activeEvent.id) {
+        await calendarApi.delete(`/events/${activeEvent.id}`);
+        dispatch(onDeleteEvent());
+        return;
+      }
+
+    } catch (error) {
+      // console.log(error);
+      Swal.fire('Error al eliminar', error.response.data?.msg, 'error');
+
+    }
+
+
+
+
   };
 
 
@@ -45,9 +61,11 @@ export const useCalendarStore = () => {
 
       const { data } = await calendarApi.get('/events');
       const events = convertEventsToDateEvents(data.eventos);
-      dispatch(onLoadEvents(events));
+      const filterData = events.filter(e => e.active === true);
+      dispatch(onLoadEvents(filterData));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      Swal.fire('Error en la carga de eventos', error.response.data?.msg, 'error');
     }
   };
 

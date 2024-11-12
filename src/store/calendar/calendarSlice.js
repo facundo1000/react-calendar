@@ -25,7 +25,7 @@ export const calendarSlice = createSlice({
 
             if (state.activeEvent) {
                 state.events = state.events.filter(
-                    e => e._id !== state.activeEvent._id
+                    e => e.id !== state.activeEvent.id
                 );
                 state.activeEvent = null;
             }
